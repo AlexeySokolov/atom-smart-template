@@ -1,0 +1,23 @@
+{
+  "name": "atom-smart-template",
+  "main": "./lib/atom-smart-template",
+  "version": "0.0.0",
+  "description": "A short description of your package",
+  "keywords": [],
+  "activationCommands": {
+    ".tree-view .selected": "atom-smart-template:create-files-from-template",
+    "atom-workspace": [
+      "atom-smart-template:open-temlates-folder",
+      "atom-smart-template:open-temlates-folder-in-atom"
+    ]
+  },
+  "repository": "https://github.com/atom/atom-smart-template",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "dependencies": {
+    "fs-plus": "^2.8.1",
+    "underscore": "^1.8.3"
+  }
+}
