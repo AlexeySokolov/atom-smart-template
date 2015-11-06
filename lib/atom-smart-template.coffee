@@ -18,11 +18,11 @@ module.exports = AtomSmartTemplate =
 
     fsPlus.makeTreeSync(@templatesRoot)
 
-    console.log SelectView
 
-    # @selectView = new SelectView(state.atomSmartTemplateViewState)
 
-    # @modalPanel = atom.workspace.addModalPanel(item: @selectView.getElement(), visible: false)
+
+
+
 
     @subscriptions = new CompositeDisposable
 
@@ -73,7 +73,9 @@ module.exports = AtomSmartTemplate =
     # Get templates array
     templates = @scanTemplatesFolder()
 
-    # console.log @selectView
+    selectView = new SelectView
+
+    console.log "Code after selectView"
 
 
     itemPath = e.currentTarget?.getPath?() ? target.getModel?().getPath()
