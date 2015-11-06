@@ -1,9 +1,10 @@
-AtomSmartTemplateView = require './atom-smart-template-view'
+SelectView = require './select-view'
 {CompositeDisposable} = require 'atom'
 path   = require 'path'
 fsPlus = require 'fs-plus'
 _      = require 'underscore'
 fs     = require 'fs'
+ejs    = require 'ejs'
 
 module.exports = AtomSmartTemplate =
   atomSmartTemplateView: null
@@ -17,8 +18,11 @@ module.exports = AtomSmartTemplate =
 
     fsPlus.makeTreeSync(@templatesRoot)
 
-    @atomSmartTemplateView = new AtomSmartTemplateView(state.atomSmartTemplateViewState)
-    @modalPanel = atom.workspace.addModalPanel(item: @atomSmartTemplateView.getElement(), visible: false)
+    console.log SelectView
+
+    # @selectView = new SelectView(state.atomSmartTemplateViewState)
+
+    # @modalPanel = atom.workspace.addModalPanel(item: @selectView.getElement(), visible: false)
 
     @subscriptions = new CompositeDisposable
 
@@ -28,8 +32,6 @@ module.exports = AtomSmartTemplate =
     @subscriptions.add atom.commands.add 'atom-workspace', 'atom-smart-template:open-temlates-folder', (e) => @openTemplatesFolder(e)
 
     @subscriptions.add atom.commands.add 'atom-workspace', 'atom-smart-template:open-temlates-folder-in-atom', (e) => @openTemplatesFolderInAtom(e)
-
-    # Scan templatesRoot
 
   deactivate: ->
     @modalPanel.destroy()
@@ -46,12 +48,38 @@ module.exports = AtomSmartTemplate =
     require('child_process').exec "open -a Atom.app #{@templatesRoot}"
     console.log "atom #{@templatesRoot}"
 
+  scanTemplatesFolder: ->
+
+    templates = []
+
+    for item in (fs.readdirSync(@templatesRoot))
+
+      fullPathToFolder = path.join @templatesRoot, item
+      continue unless fsPlus.isDirectorySync(fullPathToFolder)
+
+      fullPathToIndexIndex = path.join fullPathToFolder, "index.js"
+      continue unless fsPlus.isFileSync(fullPathToIndexIndex)
+
+      try
+        templateObject = require(fullPathToIndexIndex)
+        continue unless templateObject.name
+        continue unless templateObject.template
+        templates.push templateObject
+
+    return templates
 
   createFilesFromTemplate: (e) ->
+
+    # Get templates array
+    templates = @scanTemplatesFolder()
+
+    # console.log @selectView
+
+
     itemPath = e.currentTarget?.getPath?() ? target.getModel?().getPath()
-    newFile = path.join itemPath, "tmp/1/2/3/hello.txt"
-    fsPlus.makeTreeSync(path.dirname(newFile))
-    fs.writeFileSync(newFile, "This is generated data 1")
+    newFile  = path.join itemPath, "tmp/1/2/3/hello.txt"
+    # fsPlus.makeTreeSync(path.dirname(newFile))
+    # fs.writeFileSync(newFile, "This is generated data 1")
 
     # if @modalPanel.isVisible()
     #   @modalPanel.hide()
