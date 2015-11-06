@@ -18,12 +18,6 @@ module.exports = AtomSmartTemplate =
 
     fsPlus.makeTreeSync(@templatesRoot)
 
-
-
-
-
-
-
     @subscriptions = new CompositeDisposable
 
     # Command register
