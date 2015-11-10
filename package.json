@@ -18,9 +18,9 @@
   },
   "dependencies": {
     "atom-space-pen-views": "^2.1.0",
-    "ejs": "^2.3.4",
+    "fs-extra": "^0.26.2",
     "fs-plus": "^2.8.1",
-    "jquery": "^2.1.4",
+    "loophole": "^1.1.0",
     "space-pen": "^5.1.1",
     "underscore": "^1.8.3"
   }

@@ -4,8 +4,7 @@ path   = require 'path'
 fsPlus = require 'fs-plus'
 _      = require 'underscore'
 fs     = require 'fs'
-ejs    = require 'ejs'
-$      = require 'jquery'
+
 
 module.exports = AtomSmartTemplate =
   atomSmartTemplateView: null
@@ -58,9 +57,9 @@ module.exports = AtomSmartTemplate =
       try
         delete require.cache[fullPathToIndexIndex]
         templateObject = require(fullPathToIndexIndex)
-        templateObject.rootPath = fullPathToFolder 
+        templateObject.rootPath = fullPathToFolder
         continue unless templateObject.name
-        continue unless templateObject.template
+        continue unless templateObject.rules
         templates.push templateObject
 
     return templates

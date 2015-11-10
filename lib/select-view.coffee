@@ -1,15 +1,16 @@
 _                                = require 'underscore'
 path                             = require 'path'
 fsPlus                           = require 'fs-plus'
+fsExtra                          = require 'fs-extra'
 fs                               = require 'fs'
-ejs                              = require 'ejs'
 {View, $}                        = require 'space-pen'
 {SelectListView, TextEditorView} = require 'atom-space-pen-views'
+{allowUnsafeEval, allowUnsafeNewFunction} = require 'loophole'
 
 
 class ParamSelectView extends View
 
-  initialize: (@itemPath, @template)->
+  initialize: (@targetPath, @template)->
 
     atom.commands.add @element,
       'core:confirm': => @onConfirm()
@@ -20,7 +21,7 @@ class ParamSelectView extends View
       @onConfirm()
 
     @cancelButton.on 'click', =>
-      @destroy()  
+      @destroy()
 
 
   attach: ->
@@ -32,7 +33,37 @@ class ParamSelectView extends View
     atom.workspace.getActivePane().activate()
 
   onConfirm: ->
-    console.log "onConfirm", @itemPath, @template
+
+    cfg = {}
+
+    for param in (@template.params ? [])
+      cfg[param] = @[param+"Editor"].getText()
+
+    for rule in ((@template.rules?(cfg).items) ? [])
+      continue unless rule.path
+
+      if rule.contentFile
+        fullPathToTemplateFile = path.join @template.rootPath, rule.contentFile
+        fullPathToNewFile      = path.join @targetPath, rule.path
+        try
+          fsPlus.makeTreeSync( path.dirname(fullPathToNewFile) )
+          fsExtra.copySync fullPathToTemplateFile, fullPathToNewFile
+
+      if rule.templateFile
+        fullPathToTemplateFile = path.join @template.rootPath, rule.templateFile
+        fullPathToNewFile      = path.join @targetPath, rule.path
+
+        fsPlus.makeTreeSync( path.dirname(fullPathToNewFile) )
+        t = fs.readFileSync(fullPathToTemplateFile, "utf8")
+
+        allowUnsafeEval ->
+          allowUnsafeNewFunction ->
+            compiledTemplate = _.template(t)
+            fs.writeFileSync(fullPathToNewFile, compiledTemplate(cfg) , "utf8")
+
+
+
+
     do @destroy
 
 
@@ -69,7 +100,6 @@ module.exports =
    confirmed: (item) ->
      @cancel()
      (new ParamSelectView(@itemPath, item)).attach()
-
 
    cancelled: ->
      @panel.hide()
