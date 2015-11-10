@@ -5,6 +5,7 @@ fsPlus = require 'fs-plus'
 _      = require 'underscore'
 fs     = require 'fs'
 ejs    = require 'ejs'
+$      = require 'jquery'
 
 module.exports = AtomSmartTemplate =
   atomSmartTemplateView: null
@@ -55,7 +56,9 @@ module.exports = AtomSmartTemplate =
       continue unless fsPlus.isFileSync(fullPathToIndexIndex)
 
       try
+        delete require.cache[fullPathToIndexIndex]
         templateObject = require(fullPathToIndexIndex)
+        templateObject.rootPath = fullPathToFolder 
         continue unless templateObject.name
         continue unless templateObject.template
         templates.push templateObject
@@ -64,20 +67,10 @@ module.exports = AtomSmartTemplate =
 
   createFilesFromTemplate: (e) ->
 
-    # Get templates array
-    templates = @scanTemplatesFolder()
-
-    selectView = new SelectView
-
-    console.log "Code after selectView"
-
-
     itemPath = e.currentTarget?.getPath?() ? target.getModel?().getPath()
-    newFile  = path.join itemPath, "tmp/1/2/3/hello.txt"
+
+    selectView = new SelectView(itemPath, @scanTemplatesFolder())
+
+    # newFile  = path.join itemPath, "tmp/1/2/3/hello.txt"
     # fsPlus.makeTreeSync(path.dirname(newFile))
     # fs.writeFileSync(newFile, "This is generated data 1")
-
-    # if @modalPanel.isVisible()
-    #   @modalPanel.hide()
-    # else
-    #   @modalPanel.show()
