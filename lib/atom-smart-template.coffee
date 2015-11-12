@@ -36,7 +36,13 @@ module.exports = AtomSmartTemplate =
     atomSmartTemplateViewState: @atomSmartTemplateView.serialize()
 
   openTemplatesFolder: (e) ->
-    require('child_process').exec "open #{@templatesRoot}"
+    switch require('os').platform()
+      when 'darwin'
+        require('child_process').exec "open #{@templatesRoot}"
+      when 'linux'
+        require('child_process').exec "open #{@templatesRoot}"
+      when 'win32'
+        require('child_process').exec "explorer #{@templatesRoot}"
 
   openTemplatesFolderInAtom: (e) ->
     require('child_process').exec "open -a Atom.app #{@templatesRoot}"
@@ -58,9 +64,11 @@ module.exports = AtomSmartTemplate =
         delete require.cache[fullPathToIndexIndex]
         templateObject = require(fullPathToIndexIndex)
         templateObject.rootPath = fullPathToFolder
-        continue unless templateObject.name
-        continue unless templateObject.rules
+        throw "Template object does not contain 'name' field" unless templateObject.name
+        throw "Template object does not contain 'rules' field"  unless templateObject.rules
         templates.push templateObject
+      catch error
+        console.error  "Template index '#{fullPathToIndexIndex}' error: #{error}"
 
     return templates
 
@@ -69,7 +77,3 @@ module.exports = AtomSmartTemplate =
     itemPath = e.currentTarget?.getPath?() ? target.getModel?().getPath()
 
     selectView = new SelectView(itemPath, @scanTemplatesFolder())
-
-    # newFile  = path.join itemPath, "tmp/1/2/3/hello.txt"
-    # fsPlus.makeTreeSync(path.dirname(newFile))
-    # fs.writeFileSync(newFile, "This is generated data 1")

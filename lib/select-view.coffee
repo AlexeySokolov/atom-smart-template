@@ -40,26 +40,32 @@ class ParamSelectView extends View
       cfg[param] = @[param+"Editor"].getText()
 
     for rule in ((@template.rules?(cfg).items) ? [])
-      continue unless rule.path
+      continue unless rule.destinationFile
 
-      if rule.contentFile
-        fullPathToTemplateFile = path.join @template.rootPath, rule.contentFile
-        fullPathToNewFile      = path.join @targetPath, rule.path
+      if rule.sourceContentFile
+        fullPathToTemplateFile = path.join @template.rootPath, rule.sourceContentFile
+        fullPathToNewFile      = path.join @targetPath, rule.destinationFile
         try
           fsPlus.makeTreeSync( path.dirname(fullPathToNewFile) )
           fsExtra.copySync fullPathToTemplateFile, fullPathToNewFile
+        catch error
+          console.error  "Template processing error: #{error}"
 
-      if rule.templateFile
-        fullPathToTemplateFile = path.join @template.rootPath, rule.templateFile
-        fullPathToNewFile      = path.join @targetPath, rule.path
+      if rule.sourceTemplateFile
+        fullPathToTemplateFile = path.join @template.rootPath, rule.sourceTemplateFile
+        fullPathToNewFile      = path.join @targetPath, rule.destinationFile
 
-        fsPlus.makeTreeSync( path.dirname(fullPathToNewFile) )
-        t = fs.readFileSync(fullPathToTemplateFile, "utf8")
+        try
+          fsPlus.makeTreeSync( path.dirname(fullPathToNewFile) )
+          t = fs.readFileSync(fullPathToTemplateFile, "utf8")
+          allowUnsafeEval ->
+            allowUnsafeNewFunction ->
+              compiledTemplate = _.template(t)
+              fs.writeFileSync(fullPathToNewFile, compiledTemplate(cfg) , "utf8")
+        catch error
+          console.error  "Template processing error: #{error}"
 
-        allowUnsafeEval ->
-          allowUnsafeNewFunction ->
-            compiledTemplate = _.template(t)
-            fs.writeFileSync(fullPathToNewFile, compiledTemplate(cfg) , "utf8")
+
 
 
 
