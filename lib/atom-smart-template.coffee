@@ -45,8 +45,13 @@ module.exports = AtomSmartTemplate =
         require('child_process').exec "explorer #{@templatesRoot}"
 
   openTemplatesFolderInAtom: (e) ->
-    require('child_process').exec "open -a Atom.app #{@templatesRoot}"
-    console.log "atom #{@templatesRoot}"
+    switch require('os').platform()
+      when 'darwin'
+        require('child_process').exec "open -a Atom.app #{@templatesRoot}"
+      when 'linux'
+        require('child_process').exec "open #{@templatesRoot}"
+      when 'win32'
+        require('child_process').exec "atom #{@templatesRoot}"
 
   scanTemplatesFolder: ->
 

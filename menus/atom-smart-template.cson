@@ -11,7 +11,7 @@
     'submenu': [
       'label': 'Smart templates'
       'submenu': [
-        { 'label': 'Open templates folder in Finder', 'command': 'atom-smart-template:open-temlates-folder'},
+        { 'label': 'Open templates folder', 'command': 'atom-smart-template:open-temlates-folder'},
         { 'label': 'Open templates folder in Atom', 'command': 'atom-smart-template:open-temlates-folder-in-atom'}
       ]
     ]
