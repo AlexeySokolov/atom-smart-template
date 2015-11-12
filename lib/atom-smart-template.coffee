@@ -15,8 +15,12 @@ module.exports = AtomSmartTemplate =
   activate: (state) ->
 
     @templatesRoot = path.join atom.getUserInitScriptPath(), '../', 'smart-templates'
+    @assetsRoot    = path.join __dirname, "../", "assets"
 
     fsPlus.makeTreeSync(@templatesRoot)
+
+    unless fsPlus.existsSync( path.join(@templatesRoot, "BaseTemplate") )
+      fsPlus.copySync( path.join(@assetsRoot, "BaseTemplate"), path.join(@templatesRoot, "BaseTemplate") )
 
     @subscriptions = new CompositeDisposable
 
