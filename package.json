@@ -3,7 +3,7 @@
   "main": "./lib/atom-smart-template",
   "version": "1.0.0",
   "description": "Files generator by templates for Atom editor",
-  "keywords": [],
+  "keywords": ["template"],
   "activationCommands": {
     ".tree-view .selected": "atom-smart-template:create-files-from-template",
     "atom-workspace": [
@@ -11,7 +11,12 @@
       "atom-smart-template:open-temlates-folder-in-atom"
     ]
   },
-  "repository": "https://github.com/atom/atom-smart-template",
+
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AlexeySokolov/atom-smart-template"
+  },
+
   "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
