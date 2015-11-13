@@ -1,10 +1,12 @@
 {
   "name": "atom-smart-template",
   "main": "./lib/atom-smart-template",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Files generator by templates for Atom editor",
   "author": "Alexey Sokolov <soka.mail@gmail.com>",
-  "keywords": ["template"],
+  "keywords": [
+    "template"
+  ],
   "activationCommands": {
     ".tree-view .selected": "atom-smart-template:create-files-from-template",
     "atom-workspace": [
@@ -12,12 +14,10 @@
       "atom-smart-template:open-temlates-folder-in-atom"
     ]
   },
-
   "repository": {
     "type": "git",
     "url": "https://github.com/AlexeySokolov/atom-smart-template"
   },
-
   "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
