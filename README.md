@@ -10,3 +10,32 @@ Use the command "Create files from template" from the context menu of the file t
 </a>
 
 ## How to create new template
+
+<a href="http://www.youtube.com/watch?v=mCuzvBaPWEo">
+<img src="assets/how-to-create-new-template-yt.png" width="560" height="315" >
+</a>
+
+The main file of template is "index.js":
+
+```js
+module.exports = {
+
+    name: "Base template",
+
+    params: ["Name", "Body"],
+
+    rules: function(config) {
+
+      return({
+        items: [
+          { destinationFile: "index.html",           sourceTemplateFile: "index.template"    },
+          { destinationFile: "images/someimage.jpg", sourceContentFile: "img/someimage.jpg" }
+        ]
+      });
+
+    }
+
+}
+```
+
+The ```rules``` function has a ```config``` parameter  which contains the parameter values entered by the user when creating the template. You can use these values to generate the names and content of destination files. Also you can simply copy the files from your template (```sourceContentFile```) to the target folder without processing.
