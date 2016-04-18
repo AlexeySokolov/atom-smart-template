@@ -40,6 +40,10 @@ class ParamSelectView extends View
     for param in (@template.params ? [])
       cfg[param] = @[param+"Editor"].getText()
 
+      console.log param
+
+      console.log @template.directory
+
       if param == 'Name' && @template.directory
 
         if cfg[param].length > 0
