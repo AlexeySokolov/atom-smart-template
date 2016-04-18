@@ -35,16 +35,24 @@ class ParamSelectView extends View
   onConfirm: ->
 
     cfg = {}
+    nameParam = ''
 
     for param in (@template.params ? [])
       cfg[param] = @[param+"Editor"].getText()
+
+      if param == 'Name' && @template.directory
+
+        if cfg[param].length > 0
+          nameParam = cfg[param].replace(/\s+/g, '-').toLowerCase()
+        else
+          nameParam = @template.name.replace(/\s+/g, '-').toLowerCase()
 
     for rule in ((@template.rules?(cfg).items) ? [])
       continue unless rule.destinationFile
 
       if rule.sourceContentFile
         fullPathToTemplateFile = path.join @template.rootPath, rule.sourceContentFile
-        fullPathToNewFile      = path.join @targetPath, rule.destinationFile
+        fullPathToNewFile      = path.join @targetPath, nameParam, rule.destinationFile
         try
           fsPlus.makeTreeSync( path.dirname(fullPathToNewFile) )
           fsExtra.copySync fullPathToTemplateFile, fullPathToNewFile
@@ -53,7 +61,7 @@ class ParamSelectView extends View
 
       if rule.sourceTemplateFile
         fullPathToTemplateFile = path.join @template.rootPath, rule.sourceTemplateFile
-        fullPathToNewFile      = path.join @targetPath, rule.destinationFile
+        fullPathToNewFile      = path.join @targetPath, nameParam, rule.destinationFile
 
         try
           fsPlus.makeTreeSync( path.dirname(fullPathToNewFile) )

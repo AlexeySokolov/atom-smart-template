@@ -2,6 +2,8 @@
 module.exports = {
 
     name: "Base template",
+    
+    directory: false,
 
     params: ["Name", "Body"],
 
