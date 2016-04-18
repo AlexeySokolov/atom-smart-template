@@ -1,7 +1,7 @@
 {
   "name": "atom-smart-template",
   "main": "./lib/atom-smart-template",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Files generator by templates for Atom editor",
   "author": "Alexey Sokolov <soka.mail@gmail.com>",
   "keywords": [
