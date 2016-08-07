@@ -43,9 +43,9 @@ class ParamSelectView extends View
       if param == 'Name' && @template.directory
 
         if cfg[param].length > 0
-          nameParam = cfg[param].replace(/\s+/g, '-').toLowerCase()
+          nameParam = cfg[param].replace(/\s+/g, '-')
         else
-          nameParam = @template.name.replace(/\s+/g, '-').toLowerCase()
+          nameParam = @template.name.replace(/\s+/g, '-')
 
     for rule in ((@template.rules?(cfg).items) ? [])
       continue unless rule.destinationFile
