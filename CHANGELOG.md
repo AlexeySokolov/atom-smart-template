@@ -12,3 +12,6 @@
 
 ## 0.3.1 - Patch
 * Changelog.md and README.md updated.
+
+## 0.3.2 - Patch
+* bug fixed

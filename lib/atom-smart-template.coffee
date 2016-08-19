@@ -83,6 +83,7 @@ module.exports = AtomSmartTemplate =
 
   createFilesFromTemplate: (e) ->
 
-    itemPath = e.currentTarget?.getPath?() ? target.getModel?().getPath()
+    itemPath = e.currentTarget?.getPath?()
 
-    selectView = new SelectView(itemPath, @scanTemplatesFolder())
+    if itemPath
+        new SelectView(itemPath, @scanTemplatesFolder())
