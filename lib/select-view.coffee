@@ -26,6 +26,8 @@ class ParamSelectView extends View
 
   attach: ->
     @panel = atom.workspace.addModalPanel(item: this)
+    for param in (@template.params ? [])
+      @[param.name+"Editor"].setText(param.default)
     # @miniEditor.focus()
 
   destroy: ->
@@ -38,12 +40,12 @@ class ParamSelectView extends View
     nameParam = ''
 
     for param in (@template.params ? [])
-      cfg[param] = @[param+"Editor"].getText()
+      cfg[param.name] = @[param.name+"Editor"].getText()
 
-      if param == 'Name' && @template.directory
+      if param.name == 'Name' && @template.directory
 
-        if cfg[param].length > 0
-          nameParam = cfg[param].replace(/\s+/g, '-').toLowerCase()
+        if cfg[param.name].length > 0
+          nameParam = cfg[param.name].replace(/\s+/g, '-').toLowerCase()
         else
           nameParam = @template.name.replace(/\s+/g, '-').toLowerCase()
 
@@ -86,8 +88,8 @@ class ParamSelectView extends View
       @h4 'New files by template: ' + template.name
 
       for param in (template.params ? [])
-        @label param
-        @subview param + 'Editor', new TextEditorView(mini: true)
+        @label param.name
+        @subview param.name + 'Editor', new TextEditorView(mini: true)
 
       @button outlet: 'createButton', class: 'btn', 'Create'
       @button outlet: 'cancelButton', class: 'btn', 'Cancel'

@@ -22,9 +22,12 @@ module.exports = {
 
     name: "Base template",
 
-    params: ["Name", "Body"],
-
     directory: false,
+
+    params: [
+      { name: "Name", default: "Default name"},
+      { name: "Body", default: ""}
+    ],
 
     rules: function(config) {
 
