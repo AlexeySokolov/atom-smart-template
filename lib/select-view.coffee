@@ -87,7 +87,7 @@ class ParamSelectView extends View
 
       for param in (template.params ? [])
         @label param
-        @subview param + 'Editor', new TextEditorView(mini: true)
+        @subview param + 'Editor', new TextEditorView(mini: true, attributes:{tabindex:1})
 
       @button outlet: 'createButton', class: 'btn', 'Create'
       @button outlet: 'cancelButton', class: 'btn', 'Cancel'
